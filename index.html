@@ -1,130 +1,310 @@
-<!DOCTYPE html>
-<html>
-
+<!doctype html>
+<html lang="en">
 <head>
-  <link rel="stylesheet" href="main.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0f14" />
+  <title>Digital Business Card</title>
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --card:#111826f2;
+      --text:#e6ebf2;
+      --muted:#94a3b8;
+      --accent:#5b9dff;
+      --accent-2:#6ee7f3;
+      --border:#1f2937;
+      --btn:#0f172a;
+      --ring:#2f69ff55;
+      --success:#10b981;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 800px at 80% -10%, #1a2540 0%, transparent 60%) ,
+                  radial-gradient(900px 600px at -20% 120%, #0d2a32 0%, transparent 60%) ,
+                  var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:grid;
+      place-items:center;
+      padding:24px;
+    }
+    .card{
+      width:100%;
+      max-width:420px;
+      background: linear-gradient(180deg, #0f172aee, #0b1222ee);
+      border:1px solid var(--border);
+      border-radius:20px;
+      box-shadow: 0 20px 50px #0008, inset 0 1px 0 #ffffff0f;
+      overflow:hidden;
+      backdrop-filter: blur(8px);
+    }
+    .header{
+      padding:28px 24px 16px;
+      display:flex;
+      gap:16px;
+      align-items:center;
+    }
+    .avatar{
+      width:72px; height:72px; border-radius:50%;
+      display:grid; place-items:center;
+      color:#fff; font-weight:700; font-size:28px; letter-spacing:0.5px;
+      background: conic-gradient(from 220deg, var(--accent), var(--accent-2), var(--accent));
+      border:2px solid #ffffff22;
+      box-shadow: 0 8px 24px #0006, inset 0 0 0 2px #0006;
+      user-select:none;
+    }
+    .id{
+      min-width:0; flex:1;
+    }
+    .name{
+      margin:0;
+      font-size:22px; line-height:1.2; font-weight:700;
+    }
+    .title{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:14px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .chip{
+      margin-top:10px;
+      display:inline-flex; align-items:center; gap:6px;
+      font-size:12px; color:#cbd5e1;
+      padding:6px 10px; border-radius:999px; border:1px solid #ffffff14;
+      background:#0b1222cc;
+    }
+    .chip svg{width:14px;height:14px;opacity:.9}
+
+    .qr{
+      margin-left:auto;
+      border:1px solid #ffffff1a;
+      border-radius:12px;
+      padding:8px;
+      background:#0b1222cc;
+    }
+    .qr svg{width:32px;height:32px;display:block;opacity:.9}
+
+    .bio{
+      padding:0 24px 14px;
+      color:#cbd5e1;
+      font-size:14px; line-height:1.5;
+      border-bottom:1px dashed #ffffff14;
+    }
+
+    .buttons{
+      padding:16px; display:grid; gap:12px;
+      grid-template-columns: 1fr 1fr;
+    }
+    .btn{
+      display:flex; align-items:center; justify-content:center; gap:10px;
+      padding:14px 12px; border-radius:14px;
+      border:1px solid #ffffff1a;
+      background: linear-gradient(180deg, #0b1327, #0a1020);
+      color:var(--text);
+      text-decoration:none; font-weight:600; font-size:15px;
+      box-shadow: 0 6px 18px #0007;
+      transition: transform .08s ease, box-shadow .08s ease, border-color .2s ease;
+      min-height:52px;
+    }
+    .btn:active{ transform: translateY(1px); box-shadow: 0 3px 10px #0009; }
+    .btn:hover{ border-color:#ffffff33 }
+    .btn svg{ width:18px; height:18px; opacity:.9; flex:0 0 auto }
+
+    .btn.full{ grid-column:1 / -1 }
+    .btn.accent{
+      background: linear-gradient(180deg, #15306a, #0c1f4a);
+      border-color:#3b82f633;
+      box-shadow: 0 10px 25px var(--ring);
+    }
+    .btn.success{
+      background: linear-gradient(180deg, #0d3a2e, #0a2b23);
+      border-color:#34d39933;
+      box-shadow: 0 10px 25px #10b98144;
+    }
+
+    .links{
+      padding:8px 16px 18px;
+      display:flex; gap:10px; flex-wrap:wrap; justify-content:center;
+    }
+    .icon-link{
+      width:44px; height:44px; border-radius:12px;
+      border:1px solid #ffffff1a; display:grid; place-items:center;
+      background: #0b1222cc;
+      text-decoration:none;
+    }
+    .icon-link svg{ width:20px; height:20px; opacity:.9 }
+
+    .footer{
+      padding:14px 16px 18px; color:#93a0b4; font-size:12px; text-align:center;
+      border-top:1px dashed #ffffff14;
+    }
+    .small{font-size:12px;color:#94a3b8}
+
+    /* Ensure comfy tap targets on very small screens */
+    @media (max-width:360px){
+      .buttons{ grid-template-columns:1fr }
+    }
+  </style>
 </head>
-
 <body>
-	<section class="bg-color-grey banner">
-		<div class="container">
-			<div class="row">
-				<div class="col"></div>
-				<div class="col is-5">
-					<img class="profile-pic" src="user.png" alt="Profile Picture">
-				</div>
-				<div class="col"></div>
-			</div>
-		</div>
-	</section>
+  <main class="card" role="main">
+    <section class="header" aria-label="Profile">
+      <div class="avatar" aria-hidden="true" id="initials">JR</div>
+      <div class="id">
+        <h1 class="name" id="fullName">John Russell Barrientos</h1>
+        <p class="title">Lead Creative • NDC Digital Business Cards</p>
+        <span class="chip" title="Location">
+          <!-- map-pin -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10.5C21 16 12 22 12 22S3 16 3 10.5a9 9 0 1 1 18 0Z"/><circle cx="12" cy="10.5" r="3"/></svg>
+          San Fernando, La Union
+        </span>
+      </div>
+      <div class="qr" title="Scan to share">
+        <!-- minimalist QR glyph (decorative) -->
+        <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.2" aria-hidden="true">
+          <rect x="3" y="3" width="6" height="6" />
+          <rect x="15" y="3" width="6" height="6" />
+          <rect x="3" y="15" width="6" height="6" />
+          <path d="M15 15h6v6h-6zM18 18h3M15 18h2M18 15v2" />
+        </svg>
+      </div>
+    </section>
 
-	<section class="bg-color-white primary-info">
-		<div class="container">
-			<div class="row name-title-company">
-				<div class="col is-6">
-					<p class="text-name">Russell Barrientos</p>
-					<p class="text-title-company">Owner</p>
-					<p class="text-title-company">Artware Prints & Crafts</p>
-				</div>
-				<div class="col">
-					<img src="icon.png" alt="Company Logo">
-				</div>
-			</div>
-		</div>
-	</section>
+    <section class="bio">
+      I help brands turn first impressions into long-term relationships with NFC-powered digital cards.
+      Tap to call, message, or save my contact.
+    </section>
 
-	<section class="bg-color-white secondary-info">
-		<a href="mailto:artwareprints@gmail.com">
-			<div class="container">
-				<div class="row detail">
-					<div class="col">
-						<img src="assets/icon-email.svg" alt="Email Icon"">
-					</div>
-					<div class="col is-8">
-						<p class="text-detail">artwareprints@gmail.com</p>
-					</div>
-					<div class="col">
-						<img src="assets/right-arrow.svg" alt="Right Arrow" height="50%" width="40%">
-					</div>
-				</div>
-			</div>
-		</a>
-	</section>
+    <section class="buttons" aria-label="Actions">
+      <a class="btn accent" href="tel:+639171234567" aria-label="Call">
+        <!-- phone -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v2a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.49 19.49 0 0 1-6-6A19.79 19.79 0 0 1 2.08 4.18 2 2 0 0 1 4 2h2a2 2 0 0 1 2 1.72c.12.9.33 1.77.62 2.61a2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.47-1.08a2 2 0 0 1 2.11-.45c.84.29 1.71.5 2.61.62A2 2 0 0 1 22 16.92z"/></svg>
+        Call
+      </a>
 
-	<section class="bg-color-white secondary-info">
-		<a href="tel:+639566552626">
-			<div class="container">
-				<div class="row detail">
-					<div class="col">
-						<img src="assets/icon-phone.svg" alt="Phone Icon"">
-					</div>
-					<div class="col is-8">
-						<p class="text-detail">(+63) 9566 552626</p>
-					</div>
-					<div class="col">
-						<img src="assets/right-arrow.svg" alt="Right Arrow" height="50%" width="40%">
-					</div>
-				</div>
-			</div>
-		</a>
-	</section>
+      <a class="btn" href="mailto:hello@example.com?subject=Hi%20John" aria-label="Email">
+        <!-- mail -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 6v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6"/><path d="m22 6-10 7L2 6"/><path d="M2 6l10 7L22 6"/></svg>
+        Email
+      </a>
 
-	<section class="bg-color-white secondary-info">
-		<a href="https://www.facebook.com/artwareprints">
-			<div class="container">
-				<div class="row detail">
-					<div class="col">
-						<img src="assets/icon-website.svg" alt="Website Icon"">
-					</div>
-					<div class="col is-8">
-						<p class="text-detail">https://www.facebook.com/artwareprints</p>
-					</div>
-					<div class="col">
-						<img src="assets/right-arrow.svg" alt="Right Arrow" height="50%" width="40%">
-					</div>
-				</div>
-			</div>
-		</a>
-	</section>
+      <a class="btn" href="https://yourwebsite.com" target="_blank" rel="noopener" aria-label="Website">
+        <!-- link -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.07 7.07l2.12-2.12a5 5 0 0 0-7.07-7.07M14 11a5 5 0 0 0-7.07-7.07L4.8 6.05A5 5 0 0 0 11.86 13"/></svg>
+        Website
+      </a>
 
-	<section class="bg-color-white secondary-info">
-		<a href="https://maps.app.goo.gl/ahVY267H777dBoZw9">
-			<div class="container">
-				<div class="row detail">
-					<div class="col">
-						<img src="assets/icon-address.svg" alt="Address Icon"">
-					</div>
-					<div class="col is-8">
-						<p class="text-detail">Artware Prints & Crafts, Taguig City, Philippines</p>
-					</div>
-					<div class="col">
-						<img src="assets/right-arrow.svg" alt="Right Arrow" height="50%" width="40%">
-					</div>
-				</div>
-			</div>
-		</a>
-	</section>
+      <a class="btn success" id="saveBtn" href="#" aria-label="Save Contact (VCF)">
+        <!-- download -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+        Save Contact
+      </a>
 
-	<section class="bg-color-white bottom">
-		<div class="container">
-			<div class="row">
-				<div class="col"></div>
-				<div class="col is-5">
-					<div class="button">
-						<a href="user.vcf">
-							<p class="button">Download</p>
-						</a>
-					</div>
-				</div>
-				<div class="col"></div>
-			</div>
-		</div>
-	</section>
+      <a class="btn full" id="shareBtn" href="#" aria-label="Share Card">
+        <!-- share -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 3.9M15.4 6.6 8.6 10.5"/></svg>
+        Share Card
+      </a>
+    </section>
 
+    <section class="links" aria-label="Social links">
+      <a class="icon-link" href="https://wa.me/639171234567?text=Hi%20John" aria-label="WhatsApp" target="_blank" rel="noopener">
+        <!-- whatsapp -->
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.5 24l1.7-6A10.5 10.5 0 1112 22.5 10.6 10.6 0 016.8 21zM6.9 20l.4.2A8.8 8.8 0 1012 3.2 8.7 8.7 0 003.3 12a8.6 8.6 0 001.4 4.7l.2.4-.9 3.1z"/><path d="M16.7 13.7c-.2-.1-1.2-.6-1.3-.7s-.3-.1-.5.1-.6.7-.8.8-.3.1-.5 0a7.3 7.3 0 01-2.2-1.4 8.2 8.2 0 01-1.5-1.8c-.2-.3 0-.4.1-.6a6.5 6.5 0 00.4-.6c.1-.2 0-.4 0-.5l-.6-1.3c-.1-.3-.3-.4-.5-.3l-.5.1a.9.9 0 00-.6.4c-.2.3-.6.6-.6 1.4s.6 1.5.7 1.6a10.9 10.9 0 004 3 1.4 1.4 0 001.9-.7c.2-.3.9-1.1 1-1.3s.1-.4 0-.5-.2-.1-.4-.2z" /></svg>
+      </a>
+      <a class="icon-link" href="https://facebook.com/yourprofile" aria-label="Facebook" target="_blank" rel="noopener">
+        <!-- facebook -->
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3h-3.1V8.6c0-.9.3-1.5 1.7-1.5h1.5V4.4C16.3 4.3 15.3 4 14.1 4 11.6 4 10 5.5 10 8.2V11H7.5v3H10v8h3.5z"/></svg>
+      </a>
+      <a class="icon-link" href="https://instagram.com/yourprofile" aria-label="Instagram" target="_blank" rel="noopener">
+        <!-- instagram -->
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm0 2a3 3 0 00-3 3v10a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3H7z"/><circle cx="12" cy="12" r="3.5"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+      </a>
+      <a class="icon-link" href="https://www.linkedin.com/in/yourprofile" aria-label="LinkedIn" target="_blank" rel="noopener">
+        <!-- linkedin -->
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM0 8h5v13H0zM8 8h4.7v1.8h.1A5.1 5.1 0 0118 8c3.4 0 6 2.2 6 6.9V21H19v-5c0-1.8-.6-3-2.2-3-1.2 0-1.9.9-2.2 1.7-.1.3-.1.7-.1 1.1V21H8z"/></svg>
+      </a>
+      <a class="icon-link" href="https://t.me/yourprofile" aria-label="Telegram" target="_blank" rel="noopener">
+        <!-- telegram -->
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.9 3.1a1.6 1.6 0 00-1.6-.3L2.7 10a1.3 1.3 0 00.1 2.5l4.8 1.5 1.8 5.6a1.3 1.3 0 002 .7l2.8-2.3 4.7 3.5a1.5 1.5 0 002.3-.9l3-15a1.6 1.6 0 00-.3-1.5zM8.2 12.9l9.8-6.1-7.8 7.3-.2 3 1.4-1.2 3.1 2.3-6.3-5.3z"/></svg>
+      </a>
+    </section>
+
+    <div class="footer">
+      Tap or scan to connect • © <span id="year"></span> <span class="small">yourwebsite.com</span>
+    </div>
+  </main>
+
+  <script>
+    // Auto year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Optional: build initials from name if you change it
+    (function(){
+      const name = document.getElementById('fullName').textContent.trim();
+      const initials = name.split(/\s+/).slice(0,2).map(n=>n[0]).join('').toUpperCase();
+      document.getElementById('initials').textContent = initials || 'N';
+    })();
+
+    // Web Share API
+    document.getElementById('shareBtn').addEventListener('click', function(e){
+      e.preventDefault();
+      const shareData = {
+        title: document.title || 'My Digital Card',
+        text: 'Let’s connect!',
+        url: location.href
+      };
+      if (navigator.share) {
+        navigator.share(shareData).catch(()=>{});
+      } else {
+        // Fallback: copy URL
+        navigator.clipboard?.writeText(location.href);
+        this.textContent = 'Link Copied ✓';
+        setTimeout(()=> this.textContent = 'Share Card', 1500);
+      }
+    });
+
+    // Generate & download a VCF (vCard) on the fly
+    document.getElementById('saveBtn').addEventListener('click', function(e){
+      e.preventDefault();
+      const fullName = document.getElementById('fullName').textContent.trim();
+      const org = 'NDC Digital Business Cards';
+      const title = 'Lead Creative';
+      const tel = '+639171234567';
+      const email = 'hello@example.com';
+      const url = 'https://yourwebsite.com';
+      const city = 'San Fernando';
+      const region = 'La Union';
+      const country = 'PH';
+
+      const vcf = [
+        'BEGIN:VCARD',
+        'VERSION:3.0',
+        `N:${fullName};;;;`,
+        `FN:${fullName}`,
+        `ORG:${org}`,
+        `TITLE:${title}`,
+        `TEL;TYPE=CELL,VOICE:${tel}`,
+        `EMAIL;TYPE=INTERNET:${email}`,
+        `ADR;TYPE=HOME:;;${city};${region};;;${country}`,
+        `URL:${url}`,
+        'END:VCARD'
+      ].join('\\n');
+
+      const blob = new Blob([vcf], {type: 'text/vcard'});
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `${fullName.replace(/\\s+/g,'_')}.vcf`;
+      document.body.appendChild(link);
+      link.click();
+      URL.revokeObjectURL(link.href);
+      link.remove();
+    }, {passive:false});
+  </script>
 </body>
-
 </html>
